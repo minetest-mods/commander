@@ -1,40 +1,17 @@
--- Kill Function
-
-local function handle_kill_command(suspect, victim)
-	local victimref = minetest.get_player_by_name(victim)
-	if victimref == nil then
-		return false, ("Player "..victim.." does not exist.")
-	elseif victimref:get_hp() <= 0 then
-		if suspect == victim then
-			return false, "You are already dead"
-		else
-			return false, (victim.." is already dead")
-		end
-	end
-	if not suspect == victim then
-		minetest.log("action", suspect.." killed "..victim)
-	end
-	victimref:set_hp(0)
-end
-
--- Kill a player
-
-minetest.register_chatcommand("kill", {
-	params = "<name>",
-	description = "Kill player",
-	privs = {kill=true},
-	func = function(name, param)
-		return handle_kill_command(name, param)
-	end,
-})
-
-
--- Kill yourself
+-- Suicide from minetest for fun server
 
 minetest.register_chatcommand("killme", {
-	description = "Kill yourself",
-	func = function(name)
-		return handle_kill_command(name, name)
+	params = "",
+	description = "Kills yourself",
+	func = function(name, param)
+		local player = minetest.get_player_by_name(name)
+		if not player then return end
+		player:set_hp(0)
+		if minetest.setting_getbool("enable_damage") == false then
+			minetest.chat_send_player(name, "[X] Damage is disabled on this server.")
+		else
+			minetest.chat_send_player(name, "[X] You suicided.")
+		end
 	end,
 })
 
@@ -66,4 +43,5 @@ register_chatcommand_alias("stop", "shutdown")
 register_chatcommand_alias("tell", "msg")
 register_chatcommand_alias("w", "msg")
 register_chatcommand_alias("tp", "teleport")
+register_chatcommand_alias("suicide", "killme")
 
