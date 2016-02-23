@@ -15,11 +15,10 @@ All possible commands will be shown in the gui.
 Some new commands also provided by the mod 
 
 
-1 -- Kill commands by Wuzzy's Player Tools mod
+1 -- Suicide command from minetest for fun server
 
 /Killme
 
-/Kill -someone-
 
 2 -- Almost all default Minecraft commands by Mrlbby's Commands mod
 
