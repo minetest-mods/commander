@@ -44,12 +44,13 @@
 
 -- Open command gui by chat
 
-    minetest.register_chatcommand("command_gui", {
+    minetest.register_chatcommand("commander", {
        func = function(name)
           minetest.after(0.5, minetest.show_formspec, name, "command_gui:menu", formspec())
        end
     })
 
+	
     minetest.register_on_player_receive_fields(function(player, formname, fields)
        if formname ~= "command_gui:menu" then
           return
@@ -80,6 +81,26 @@
        end
     end)
   
+------
+-- Commander Tool
 
 
-dofile(minetest.get_modpath("commander").."/commands.lua")
+-- items
+minetest.register_craftitem("commander:commander", {
+    description = "Commander",
+    inventory_image = "commander.png",   
+    on_use =  function(itemstack, user, pointed_thing)
+          local name = user:get_player_name()
+          minetest.after(0.5, minetest.show_formspec, name, "command_gui:menu", formspec())
+
+    end,      
+})
+
+
+-- recipes
+minetest.register_craft({
+    output = "commander:commander",
+    recipe = {
+        {"vessels:glass_fragments", "default:iron_lump", ""}
+    }
+})  
